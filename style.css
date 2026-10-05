@@ -1,0 +1,1252 @@
+:root{
+  --ink:#241b18;--paper:#eadcc3;--paper2:#f4ead7;--rust:#9b4f3f;--rose:#d48776;--gold:#c69a5b;
+  --night:#171411;--cream:#f5ead7;--muted:#806e5e;--line:rgba(231,201,164,.24);
+  --serif:'Cormorant Garamond',Georgia,serif;--hand:'Kalam',cursive;--mono:'DM Mono',ui-monospace,monospace;
+  --safe-top:env(safe-area-inset-top,0px);--safe-bottom:env(safe-area-inset-bottom,0px);
+}
+*{box-sizing:border-box}
+html{margin:0;background:#171310;scroll-behavior:auto}
+body{margin:0;min-width:280px;background:#171310;color:var(--cream);font-family:var(--serif);overflow-x:hidden}
+button{font:inherit;-webkit-tap-highlight-color:transparent}
+button:focus-visible{outline:2px solid #f0b09e;outline-offset:4px}
+.grain{position:fixed;inset:0;z-index:100;pointer-events:none;opacity:.075;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 180 180' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.6'/%3E%3C/svg%3E");mix-blend-mode:screen}
+.progress{position:fixed;top:0;left:0;width:100%;height:3px;background:rgba(255,255,255,.07);z-index:120}.progress span{display:block;height:100%;width:0;background:linear-gradient(90deg,var(--rose),var(--gold));transition:width .45s ease}
+.screen{display:none;position:relative;min-height:100svh;width:100%;overflow:hidden;padding-top:max(20px,var(--safe-top));padding-bottom:calc(88px + var(--safe-bottom));isolation:isolate}
+.screen.active{display:block;animation:pageIn .55s cubic-bezier(.2,.75,.2,1)}
+.screen[aria-hidden="true"]{pointer-events:none}
+@keyframes pageIn{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:none}}
+@media(prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:.01ms!important;transition-duration:.01ms!important;scroll-behavior:auto!important}}
+
+/* V5 — minimal floating story controls. Navigation never steals layout space. */
+.story-controls{
+  position:fixed;z-index:130;left:50%;bottom:calc(18px + var(--safe-bottom));transform:translateX(-50%);
+  display:flex;align-items:center;gap:10px;padding:6px 8px;
+  background:rgba(18,13,11,.72);border:1px solid rgba(235,206,171,.18);
+  backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);
+  border-radius:999px;box-shadow:0 12px 35px rgba(0,0,0,.35);
+}
+.story-arrow{width:38px;height:38px;border-radius:50%;border:1px solid rgba(235,206,171,.22);background:rgba(255,255,255,.035);color:#ead8c1;cursor:pointer;display:grid;place-items:center;font:16px var(--serif);transition:.2s ease}
+.story-arrow:hover{background:rgba(216,133,113,.2);border-color:rgba(216,133,113,.6);transform:translateY(-1px)}
+.story-arrow:disabled{opacity:.28;cursor:default;transform:none}
+.story-count{min-width:66px;text-align:center;font:8px var(--mono);letter-spacing:2px;color:#cdb092}
+
+/* INTRO */
+.hero{background:radial-gradient(circle at 74% 35%,#654032 0,#392821 27%,#211916 56%,#15110f 100%);display:none;align-items:center}
+.hero.active{display:flex;min-height:100svh}
+.hero-copy{position:relative;z-index:5;width:46%;max-width:600px;margin-left:clamp(28px,8vw,120px)}
+.eyebrow,small{font-family:var(--mono);font-size:10px;letter-spacing:2.4px;color:#c8aa8a}.hero h1{font-size:clamp(76px,10vw,150px);line-height:.72;margin:22px 0;color:#f4dfc2;font-weight:500}.hero h1 em{color:#dc907d;font-style:italic}.hero h1 span{font-size:.32em;color:#dc907d;vertical-align:top;margin-left:10px}.hero-sub{font-family:var(--hand);font-size:clamp(19px,2vw,26px);line-height:1.35;color:#dfc8ab}.paper-btn{border:1px solid rgba(255,255,255,.15);background:linear-gradient(135deg,#d9917e,#b96b5d);color:#fff4e6;padding:14px 20px;border-radius:2px;cursor:pointer;box-shadow:0 10px 22px rgba(0,0,0,.24);transition:transform .2s,box-shadow .2s}.paper-btn:hover{transform:translateY(-2px);box-shadow:0 14px 28px rgba(0,0,0,.34)}.paper-btn b{margin-left:8px}
+.hero-collage{position:absolute;z-index:2;right:3vw;top:10%;width:51%;height:76%;pointer-events:none}.photo{position:absolute;background:linear-gradient(145deg,#7c5847,#30231f);border:10px solid #eadfc9;border-bottom-width:45px;box-shadow:0 28px 50px rgba(0,0,0,.45);display:flex;align-items:flex-end;padding:0 7px 8px;color:#5f4d42;font:7px var(--mono);letter-spacing:1px}.p1{width:230px;height:300px;right:26%;top:2%;transform:rotate(-8deg)}.p2{width:220px;height:285px;right:3%;top:12%;transform:rotate(6deg)}.p3{width:250px;height:320px;right:25%;bottom:-5%;transform:rotate(3deg)}.film-strip{position:absolute;width:390px;height:90px;right:9%;top:42%;transform:rotate(-19deg);background:repeating-linear-gradient(90deg,#111 0 44px,transparent 44px 55px),linear-gradient(90deg,#181513,#3a2a24);opacity:.65}.note{position:absolute;right:0;bottom:15%;background:#cfa46e;color:#3c2c24;padding:23px 25px;font:17px/1.45 var(--hand);box-shadow:0 15px 30px #0005;transform:rotate(4deg)}.note strong{font-weight:700}
+.hero-orbit{position:absolute;border:1px solid rgba(217,143,124,.2);border-radius:50%;pointer-events:none}.orbit-a{width:55vw;height:55vw;right:-17vw;top:-12vw}.orbit-b{width:35vw;height:35vw;right:11vw;bottom:-20vw}
+
+/* HUB */
+.hub{background:radial-gradient(circle at 50% 0,#4b342b 0,#2b211d 38%,#171310 100%);padding:clamp(60px,8vh,100px) clamp(22px,7vw,100px)}
+.screen-head{max-width:1180px;margin:0 auto 40px;display:flex;justify-content:space-between;align-items:flex-end;gap:20px}.screen-head h2,.section-title h2{font-size:clamp(52px,7vw,94px);line-height:.84;margin:12px 0 0;font-weight:500}.screen-head h2 em,.section-title h2 em{color:#d98976}.stamp{border:1px solid #a98969;color:#c9ab89;padding:10px 12px;font:9px/1.5 var(--mono);letter-spacing:2px;transform:rotate(5deg)}
+.hub-table{max-width:1120px;margin:auto;display:grid;grid-template-columns:repeat(3,1fr);gap:18px}.object-card{position:relative;min-height:190px;border:1px solid rgba(230,196,158,.2);background:linear-gradient(145deg,#4a352d,#211916);color:#f1dfc7;text-align:left;padding:26px;cursor:pointer;overflow:hidden;box-shadow:0 18px 35px #0005;transition:.22s ease}.object-card:hover{transform:translateY(-5px) rotate(.3deg);border-color:#bc806c;box-shadow:0 24px 42px #0007}.object-card::after{content:"";position:absolute;inset:auto -25px -55px auto;width:150px;height:150px;border-radius:50%;background:rgba(216,133,113,.08)}.object-icon{display:block;font:22px var(--mono);color:#d8b38d;margin-bottom:42px}.object-card strong{display:block;font:27px var(--hand);font-weight:400}.object-card small{display:block;margin-top:5px;font:10px var(--mono);letter-spacing:1px;color:#ad9682}.object-card i{position:absolute;right:22px;bottom:20px;font:8px var(--mono);letter-spacing:1px;color:#d8907e;font-style:normal}.hub-bottom{max-width:1120px;margin:28px auto 0;display:flex;justify-content:space-between;align-items:center;gap:20px;color:#a9917c;font:9px var(--mono);letter-spacing:1.5px}.text-link{border:0;background:transparent;color:#e0b9a0;cursor:pointer;font:10px var(--mono);letter-spacing:1.4px}.text-link:hover{text-decoration:underline}
+
+/* TIMELINE */
+.timeline{background:#9c6657;padding:8vh 5vw}.torn-paper{position:relative;width:min(1180px,100%);margin:0 auto;padding:clamp(42px,6vw,80px);color:#382b25;background:#eee1c5;box-shadow:0 30px 60px #0008;transform:rotate(-.35deg);min-height:75vh}.torn-paper::before{content:"";position:absolute;inset:0;background:radial-gradient(circle at 10% 20%,#00000008 0 2px,transparent 3px),radial-gradient(circle at 80% 70%,#00000008 0 2px,transparent 3px);background-size:37px 41px;pointer-events:none}.torn-paper h2{font-size:clamp(52px,7vw,92px);line-height:.84;font-weight:500;margin:15px 0 45px}.torn-paper h2 em{color:#b76c5a}.years{display:grid;grid-template-columns:repeat(6,1fr);gap:22px}.years article{border-top:1px solid #9c8063;padding-top:18px}.years b{font:18px var(--mono);color:#9d5e4c}.years i{display:block;color:#a65c4d;font-style:normal;font-size:20px;margin:10px 0}.years strong{font:22px var(--hand)}.years p{font:12px var(--serif);color:#745f4d;line-height:1.35}.editable-hint{position:absolute;left:clamp(42px,6vw,80px);bottom:32px;font:9px var(--mono);color:#8a735f;letter-spacing:.7px}
+
+/* MEMORIES */
+.memories{background:#30251f;padding:8vh clamp(22px,7vw,100px);text-align:center}.section-title{max-width:1100px;margin:0 auto}.section-title p{color:#a99582;font:14px var(--hand)}.memory-wall{max-width:1050px;margin:50px auto 35px;display:grid;grid-template-columns:repeat(4,1fr);gap:28px;align-items:start}.polaroid-card{background:#eee2cb;color:#493b31;padding:12px 12px 26px;box-shadow:0 20px 28px #0007;transform:rotate(-5deg);transition:.3s;text-align:left}.polaroid-card:nth-child(2){transform:rotate(4deg) translateY(28px)}.polaroid-card:nth-child(3){transform:rotate(-2deg) translateY(-12px)}.polaroid-card:nth-child(4){transform:rotate(6deg) translateY(35px)}.polaroid-card:hover{transform:translateY(-8px) rotate(0)}.memory-photo{aspect-ratio:1/1.1;background:linear-gradient(145deg,#725342,#25201e);display:flex;align-items:center;justify-content:center;color:#d8bda1;font:9px var(--mono);letter-spacing:2px}.polaroid-card p{font:20px var(--hand);margin:13px 4px 5px}.polaroid-card small{font-size:7px;color:#756354}
+
+/* WHY */
+.why{background:#6b3f38;display:grid;place-items:center;padding:80px 20px}.why-bg{position:absolute;inset:0;background:radial-gradient(circle at 20% 20%,#d18b73 0 1px,transparent 2px),radial-gradient(circle at 80% 70%,#e6b099 0 1px,transparent 2px);background-size:75px 75px;opacity:.25}.why-card{position:relative;z-index:2;width:min(650px,92vw);padding:clamp(34px,6vw,60px);background:#eadcc4;color:#382b25;box-shadow:0 30px 60px #0007;text-align:center;transform:rotate(-1deg)}.why-card h2{font-size:clamp(44px,6vw,75px);line-height:.85;font-weight:500;margin:22px 0}.why-card h2 em{color:#c87968}.why-card p{font-size:18px;color:#725e4f;max-width:450px;margin:auto;line-height:1.5}.reason-count{font:10px var(--mono);margin:15px}.reason-actions{display:flex;justify-content:center;gap:12px;margin-top:30px}.reason-actions button{border:1px solid #805f4e;background:#4b352d;color:#ead8c1;width:48px;height:48px;border-radius:50%;cursor:pointer}
+
+/* SONG */
+.song{background:#241e1a;padding:9vh 7vw}.record-player{max-width:1050px;margin:20px auto;display:grid;grid-template-columns:1fr 1fr;align-items:center;gap:7vw}.turntable{background:#302822;padding:clamp(25px,5vw,55px);border-radius:5px;box-shadow:0 25px 50px #0009;position:relative}.vinyl{width:min(390px,100%);margin:auto;aspect-ratio:1;border-radius:50%;background:repeating-radial-gradient(circle,#111 0 4px,#171717 5px 7px);display:grid;place-items:center;animation:spin 6s linear infinite paused}.vinyl.playing{animation-play-state:running}.label{width:28%;aspect-ratio:1;border-radius:50%;background:#bd725f;color:#f5dfc7;display:grid;place-items:center;text-align:center;font:clamp(20px,3vw,30px) var(--hand)}.label small{color:#f5dfc7;font-size:8px}.needle{position:absolute;width:145px;height:8px;background:#c5a47a;right:8%;top:18%;transform:rotate(26deg);transform-origin:right}.song-copy{text-align:left}.song-copy h2{font-size:clamp(48px,6vw,78px);line-height:.85;font-weight:500;margin:20px 0}.song-copy h2 em{color:#d88975}.song-copy p{color:#bda892;line-height:1.6}.player{display:flex;gap:15px;align-items:center;border-top:1px solid #65534a;padding-top:20px}.player button{width:50px;height:50px;border-radius:50%;border:1px solid #a56d5e;background:#a65e51;color:#fff;cursor:pointer}.player span{display:block;font:9px var(--mono);color:#917c6c;margin-top:6px}.audio-note{font-size:10px!important;color:#7f6c5c!important}.audio-note code{color:#d49a83}
+
+/* FUTURE */
+.future{background:#141a19}.future-scene{position:absolute;inset:0;background:linear-gradient(#111b2a,#27333b 60%,#17201e)}.moon{position:absolute;width:min(150px,22vw);aspect-ratio:1;border-radius:50%;background:#ead7b1;right:13%;top:12%;box-shadow:0 0 70px #dfc28a66}.city{position:absolute;bottom:0;left:0;right:0;height:35%;background:linear-gradient(90deg,#101716 5%,transparent 5% 10%,#111917 10% 17%,transparent 17% 22%,#111917 22% 30%,transparent 30% 35%,#111917 35% 43%,transparent 43% 49%,#111917 49% 58%,transparent 58% 64%,#111917 64% 72%,transparent 72% 79%,#111917 79% 90%,#111917 90%)}.future-paper{position:relative;z-index:2;width:min(500px,88vw);margin:8vh 9vw;background:#e6d8bd;color:#382c25;padding:48px;box-shadow:0 25px 60px #0009;transform:rotate(-2deg)}.future-paper h2{font-size:52px;font-weight:500;margin:15px 0 28px}.future-paper label{display:block;font:18px var(--hand);margin:18px 0}.future-paper input{accent-color:#a96153;margin-right:12px}
+
+/* LETTER */
+.letter-screen{background:#27211d;padding:8vh 7vw;display:none;place-items:center}.letter-screen.active{display:grid}.letter-sheet{background:#e9ddc5;color:#3a2b24;width:min(700px,90vw);padding:clamp(42px,6vw,70px);box-shadow:0 30px 70px #0009;transform:rotate(1deg);background-image:repeating-linear-gradient(transparent 0 37px,#c5ae91 38px)}.letter-sheet h2{font:48px var(--hand);font-weight:400;margin:25px 0}.letter-sheet p{font-size:21px;line-height:1.75;margin:0 0 14px}.letter-sheet .signature{font-family:var(--hand);font-size:26px;margin-top:35px}.letter-sheet .paper-btn{margin-top:16px}
+
+/* FINAL */
+.final{background:#171310;padding:7vh 8vw;display:none;align-items:center;justify-content:center;gap:7vw}.final.active{display:flex}.final-photo{width:min(430px,38vw);height:min(560px,65vh);background:linear-gradient(150deg,#795446,#171413 70%);border:14px solid #e8dcc7;border-bottom-width:48px;box-shadow:0 30px 60px #0009;transform:rotate(-4deg);display:grid;place-items:center;color:#8e7564;font:9px var(--mono);letter-spacing:2px}.final-copy{max-width:650px}.final-copy h2{font-size:clamp(50px,7vw,95px);line-height:.82;font-weight:500;margin:18px 0}.final-copy h2 em{color:#d98976}.final-copy p{font:25px var(--hand);color:#d6bda1}.final-copy p.small{font:15px var(--serif);color:#9f8a78;max-width:520px;line-height:1.7}.brand{position:absolute;bottom:96px;left:50%;transform:translateX(-50%);font:14px var(--mono);letter-spacing:2px;color:#d0aa88;text-align:center;white-space:nowrap}.brand span{color:#d47f70}.brand small{display:block;font-size:6px;margin-top:6px}
+@keyframes spin{to{transform:rotate(360deg)}}
+
+/* TABLET */
+@media(max-width:1000px){
+  .hero{display:block;padding:13vh 7vw 110px}.hero.active{display:block}.hero-copy{width:100%;max-width:650px;margin:0}.hero-collage{position:relative;right:auto;top:auto;width:100%;height:420px;margin-top:20px}.hub-table{grid-template-columns:repeat(2,1fr)}.memory-wall{grid-template-columns:repeat(2,1fr)}.years{grid-template-columns:repeat(3,1fr);gap:28px}.record-player{grid-template-columns:1fr;max-width:650px}.vinyl{max-width:390px}.final{flex-direction:column;text-align:center}.final-photo{width:270px;height:330px}.final-copy{max-width:700px}.brand{position:relative;left:auto;bottom:auto;transform:none;margin-top:20px}future-paper{margin:9vh auto}.song-copy{text-align:center}.player{justify-content:center}.audio-note{text-align:center}
+}
+
+/* =========================================================
+   PHONE
+   ========================================================= */
+
+@media(max-width:620px){
+
+  /* ---------- GLOBAL ---------- */
+
+  .screen{
+    padding-bottom:calc(72px + var(--safe-bottom));
+  }
+
+
+  /* ---------- HERO ---------- */
+
+  .hero{
+    padding:12vh 22px 105px;
+  }
+
+  .hero h1{
+    font-size:clamp(64px,22vw,88px);
+    margin:20px 0;
+  }
+
+  .hero-sub{
+    font-size:19px;
+  }
+
+  .hero-collage{
+    height:330px;
+    margin-top:25px;
+  }
+
+  .photo{
+    border-width:7px;
+    border-bottom-width:30px;
+  }
+
+  .p1{
+    width:145px;
+    height:195px;
+    right:35%;
+    top:0;
+  }
+
+  .p2{
+    width:140px;
+    height:185px;
+    right:0;
+    top:12%;
+  }
+
+  .p3{
+    width:165px;
+    height:215px;
+    right:27%;
+    bottom:-2%;
+  }
+
+  .film-strip{
+    width:250px;
+    height:58px;
+    right:0;
+    top:45%;
+  }
+
+  .note{
+    font-size:13px;
+    padding:14px 15px;
+    right:0;
+    bottom:6%;
+  }
+
+
+  /* ---------- HEADINGS ---------- */
+
+  .screen-head{
+    align-items:flex-start;
+    margin-bottom:26px;
+  }
+
+  .screen-head h2,
+  .section-title h2{
+    font-size:clamp(50px,14vw,68px);
+  }
+
+  .stamp{
+    display:none;
+  }
+
+
+  /* ---------- HUB ---------- */
+
+  .hub{
+    padding:8vh 16px 100px;
+  }
+
+  .hub-table{
+    grid-template-columns:1fr;
+    gap:12px;
+  }
+
+  .object-card{
+    min-height:135px;
+    padding:20px;
+  }
+
+  .object-icon{
+    margin-bottom:28px;
+  }
+
+  .object-card strong{
+    font-size:25px;
+  }
+
+  .object-card i{
+    right:18px;
+    bottom:17px;
+  }
+
+  .hub-bottom{
+    display:none;
+  }
+
+
+  /* ---------- TIMELINE ---------- */
+
+  .timeline{
+    padding:7vh 12px 100px;
+    overflow-y:auto;
+  }
+
+  .torn-paper{
+    padding:38px 22px 70px;
+    min-height:78vh;
+  }
+
+  .torn-paper h2{
+    font-size:55px;
+    margin-bottom:30px;
+  }
+
+  .years{
+    grid-template-columns:1fr 1fr;
+    gap:18px;
+  }
+
+  .years article{
+    padding-top:12px;
+  }
+
+  .years strong{
+    font-size:19px;
+  }
+
+  .years p{
+    font-size:11px;
+  }
+
+  .editable-hint{
+    left:22px;
+    right:22px;
+    bottom:25px;
+    font-size:8px;
+    line-height:1.4;
+  }
+
+
+  /* ---------- MEMORIES ---------- */
+
+  .memories{
+    padding:8vh 14px 100px;
+  }
+
+  .memory-wall{
+    grid-template-columns:1fr 1fr;
+    gap:14px;
+    margin:35px auto 20px;
+  }
+
+  .polaroid-card{
+    padding:7px 7px 18px;
+  }
+
+  .polaroid-card p{
+    font-size:14px;
+    margin:9px 2px 4px;
+  }
+
+  .polaroid-card small{
+    font-size:6px;
+  }
+
+  .memory-photo{
+    font-size:7px;
+  }
+
+
+  /* ---------- WHY US ---------- */
+
+  .why{
+    padding:50px 12px 100px;
+  }
+
+  .why-card{
+    width:94vw;
+    padding:34px 18px;
+  }
+
+  .why-card h2{
+    font-size:clamp(43px,12vw,58px);
+  }
+
+  .why-card p{
+    font-size:16px;
+  }
+
+  .reason-actions button{
+    width:44px;
+    height:44px;
+  }
+
+
+  /* =========================================================
+     SONG / VINYL
+     ========================================================= */
+
+  .song{
+    padding:8vh 16px 120px;
+  }
+
+  .turntable{
+    padding:22px;
+  }
+
+  .needle{
+    width:105px;
+  }
+
+  .song-copy{
+    padding-bottom:100px;
+  }
+
+  .song-copy h2{
+    font-size:52px;
+  }
+
+  .song-copy p{
+    font-size:14px;
+  }
+
+  /*
+     IMPORTANT:
+     The song controls need their own space so they
+     don't collide with the fixed story navigation.
+  */
+
+  .song .player{
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    gap:10px;
+    position:relative;
+    z-index:5;
+    margin-top:24px;
+    margin-bottom:0;
+    padding-top:20px;
+  }
+
+  .song .player button{
+    width:46px;
+    height:46px;
+    flex:none;
+    position:relative;
+    z-index:6;
+  }
+
+  .song .player span{
+    font-size:8px;
+  }
+
+  .song .audio-note{
+    text-align:center;
+    margin-top:12px;
+  }
+
+
+  /* ---------- FUTURE ---------- */
+
+  .future{
+    padding-bottom:100px;
+  }
+
+  .moon{
+    width:95px;
+    right:10%;
+    top:10%;
+  }
+
+  .future-paper{
+    width:calc(100% - 30px);
+    margin:8vh auto;
+    padding:34px 25px;
+  }
+
+  .future-paper h2{
+    font-size:44px;
+  }
+
+  .future-paper label{
+    font-size:17px;
+    margin:15px 0;
+  }
+
+
+  /* ---------- LETTER ---------- */
+
+  .letter-screen{
+    padding:7vh 12px 100px;
+  }
+
+  .letter-sheet{
+    width:94vw;
+    padding:42px 24px;
+  }
+
+  .letter-sheet h2{
+    font-size:42px;
+  }
+
+  .letter-sheet p{
+    font-size:18px;
+    line-height:1.65;
+  }
+
+
+  /* ---------- FINAL ---------- */
+
+  .final{
+    padding:8vh 18px 100px;
+    gap:24px;
+  }
+
+  .final-photo{
+    width:210px;
+    height:270px;
+  }
+
+  .final-copy h2{
+    font-size:55px;
+  }
+
+  .final-copy p{
+    font-size:22px;
+  }
+
+  .final-copy p.small{
+    font-size:13px;
+  }
+
+  .brand{
+    font-size:11px;
+    bottom:78px;
+  }
+
+
+  /* =========================================================
+     FIXED STORY NAVIGATION
+     ========================================================= */
+
+  .story-controls{
+    bottom:calc(12px + var(--safe-bottom));
+    padding:5px 6px;
+    gap:7px;
+    z-index:130;
+  }
+
+  .story-arrow{
+    width:42px;
+    height:42px;
+  }
+
+  .story-count{
+    min-width:58px;
+    font-size:7px;
+  }
+
+
+  /* =========================================================
+     EXTRA CLEARANCE FOR SONG PAGE
+     ========================================================= */
+
+  .song{
+    padding-bottom:140px;
+  }
+
+  .song-copy{
+    padding-bottom:110px;
+  }
+
+}
+/* V5 — viewport-safe chapter system */
+.screen:not(.active){display:none!important;visibility:hidden!important;pointer-events:none!important}
+.screen.active{visibility:visible!important;min-height:100svh;height:auto;overflow-x:hidden;overflow-y:auto;overscroll-behavior:contain}
+.hero.active,.final.active{display:flex!important}
+.why.active,.letter-screen.active{display:grid!important}
+.hub.active,.timeline.active,.memories.active,.song.active,.future.active{display:flex!important;flex-direction:column}
+.hero.active{flex-direction:column;align-items:stretch}
+.hero-copy{flex:0 0 auto}
+.hero-collage{flex:1 1 auto;min-height:0}
+
+/* Keep content clear of the floating controls without reserving a giant footer. */
+.screen{padding-bottom:calc(72px + var(--safe-bottom))}
+
+/* Final reveal: stable two-column composition; photo never collapses into a strip. */
+.final.active{display:grid!important;grid-template-columns:minmax(280px,430px) minmax(320px,650px);align-items:center;justify-content:center;gap:clamp(40px,7vw,110px);padding:8vh clamp(24px,7vw,100px) calc(90px + var(--safe-bottom))}
+.final-photo{width:clamp(280px,32vw,430px);height:auto;aspect-ratio:4/5;flex:none}
+.final-copy{width:min(650px,100%)}
+
+@media(max-width:1000px){
+  .final.active{grid-template-columns:1fr;justify-items:center;text-align:center;gap:28px}
+  .final-photo{width:min(320px,58vw)}
+  .final-copy{max-width:700px}
+  .brand{position:relative;left:auto;bottom:auto;transform:none;margin-top:20px}
+}
+@media(max-width:620px){
+  .story-controls{bottom:calc(12px + var(--safe-bottom));padding:5px 6px;gap:7px}
+  .story-arrow{width:42px;height:42px}
+  .story-count{min-width:58px;font-size:7px}
+  .screen{padding-bottom:calc(68px + var(--safe-bottom))}
+  .hero{padding-bottom:70px}
+  .final.active{padding:7vh 18px calc(82px + var(--safe-bottom));gap:22px}
+  .final-photo{width:min(250px,72vw)}
+  .final-copy h2{font-size:clamp(48px,15vw,64px)}
+  .final-copy p{font-size:21px}
+}
+/* =========================================================
+   CHERIVELLE — TABLET / iPAD PRO REFINEMENT
+   Designed for 768px–1100px portrait + landscape widths
+   ========================================================= */
+
+@media (min-width: 621px) and (max-width: 1100px) {
+
+  /* ---------- GLOBAL ---------- */
+
+  .screen.active {
+    min-height: 100svh;
+    height: auto;
+    min-height: 100svh;
+    overflow-x: hidden;
+    overflow-y: auto;
+    padding:
+      clamp(55px, 7vh, 90px)
+      clamp(42px, 6vw, 80px)
+      calc(100px + var(--safe-bottom));
+  }
+
+  /* ---------- FLOATING NAV ---------- */
+
+  .story-controls {
+    bottom: calc(22px + var(--safe-bottom));
+    min-width: 190px;
+    padding: 7px 9px;
+    gap: 10px;
+    z-index: 100;
+  }
+
+  .story-arrow {
+    width: 42px;
+    height: 42px;
+    font-size: 16px;
+  }
+
+  .story-count {
+    min-width: 70px;
+    font-size: 8px;
+    letter-spacing: 2px;
+  }
+
+
+  /* =========================================================
+     HERO
+     ========================================================= */
+
+  .hero.active {
+    display: grid !important;
+    grid-template-columns: minmax(0, 1fr) minmax(380px, 0.9fr);
+    align-items: center;
+    gap: clamp(30px, 5vw, 80px);
+    padding:
+      8vh
+      clamp(55px, 8vw, 110px)
+      calc(100px + var(--safe-bottom));
+  }
+
+  .hero-copy {
+    max-width: 560px;
+    z-index: 5;
+  }
+
+  .hero .eyebrow {
+    font-size: 10px;
+    letter-spacing: 3px;
+  }
+
+  .hero h1 {
+    font-size: clamp(90px, 10vw, 125px);
+    line-height: .78;
+    margin: 24px 0;
+  }
+
+  .hero-sub {
+    font-size: clamp(20px, 2vw, 25px);
+    line-height: 1.45;
+  }
+
+  .hero-start {
+    margin-top: 28px;
+    padding: 17px 24px;
+    font-size: 11px;
+  }
+
+  .hero-collage {
+    position: relative;
+    inset: auto;
+    width: 100%;
+    height: min(620px, 65vh);
+    min-height: 480px;
+    margin: 0;
+  }
+
+  .hero-collage .p1 {
+    width: 240px;
+    height: 310px;
+    right: 32%;
+    top: 3%;
+  }
+
+  .hero-collage .p2 {
+    width: 235px;
+    height: 305px;
+    right: 0;
+    top: 18%;
+  }
+
+  .hero-collage .p3 {
+    width: 245px;
+    height: 320px;
+    right: 28%;
+    bottom: 2%;
+  }
+
+  .hero-collage .film-strip {
+    width: 310px;
+    height: 72px;
+    right: 2%;
+    top: 48%;
+  }
+
+  .hero-collage .note {
+    right: 0;
+    bottom: 4%;
+    font-size: 15px;
+    padding: 17px 20px;
+  }
+
+
+  /* =========================================================
+     HUB
+     ========================================================= */
+
+  .hub.active {
+    justify-content: center;
+  }
+
+  .screen-head {
+    width: min(100%, 900px);
+    margin: 0 auto 40px;
+  }
+
+  .screen-head h2 {
+    font-size: clamp(65px, 7vw, 90px);
+    line-height: .85;
+  }
+
+  .hub-table {
+    width: min(100%, 900px);
+    margin: 0 auto;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 18px;
+  }
+
+  .object-card {
+    min-height: 210px;
+    padding: 25px;
+  }
+
+  .object-card strong {
+    font-size: 23px;
+  }
+
+  .object-card small {
+    font-size: 11px;
+  }
+
+  .object-card i {
+    font-size: 8px;
+  }
+
+
+  /* =========================================================
+     TIMELINE
+     ========================================================= */
+
+  .timeline.active {
+    align-items: center;
+    justify-content: center;
+  }
+
+  .torn-paper {
+    width: min(900px, 92vw);
+    min-height: min(850px, 78svh);
+    padding: clamp(55px, 6vw, 80px);
+  }
+
+  .torn-paper h2 {
+    font-size: clamp(70px, 8vw, 100px);
+    line-height: .82;
+    margin-bottom: 50px;
+  }
+
+  .years {
+    grid-template-columns: repeat(3, 1fr);
+    gap: 38px 28px;
+  }
+
+  .years article {
+    min-height: 130px;
+  }
+
+  .years b {
+    font-size: 16px;
+  }
+
+  .years strong {
+    font-size: 21px;
+  }
+
+  .years p {
+    font-size: 12px;
+    line-height: 1.5;
+  }
+
+  .editable-hint {
+    font-size: 9px;
+  }
+
+
+  /* =========================================================
+     MEMORIES
+     ========================================================= */
+
+  .memories.active {
+    justify-content: center;
+  }
+
+  .section-title {
+    width: min(100%, 900px);
+    margin: 0 auto;
+  }
+
+  .section-title h2 {
+    font-size: clamp(65px, 7.5vw, 95px);
+    line-height: .82;
+  }
+
+  .section-title p {
+    font-size: 15px;
+    margin-top: 18px;
+  }
+
+  .memory-wall {
+    width: min(100%, 900px);
+    margin: 55px auto 20px;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 22px;
+  }
+
+  .polaroid-card {
+    padding: 10px 10px 28px;
+  }
+
+  .memory-photo {
+    min-height: 190px;
+  }
+
+  .polaroid-card p {
+    font-size: 17px;
+  }
+
+  .polaroid-card small {
+    font-size: 7px;
+  }
+
+
+  /* =========================================================
+     WHY US
+     ========================================================= */
+
+  .why.active {
+    place-items: center;
+  }
+
+  .why-card {
+    width: min(720px, 82vw);
+    padding: clamp(55px, 6vw, 80px);
+  }
+
+  .why-card h2 {
+    font-size: clamp(70px, 8vw, 105px);
+    line-height: .82;
+  }
+
+  .why-card p {
+    max-width: 560px;
+    font-size: 18px;
+    margin: 25px auto 0;
+  }
+
+  .reason-actions {
+    margin-top: 38px;
+  }
+
+
+  /* =========================================================
+     SONG
+     ========================================================= */
+
+  .song.active {
+    justify-content: center;
+  }
+
+  .record-player {
+    width: min(100%, 900px);
+    grid-template-columns: minmax(360px, .95fr) minmax(360px, 1fr);
+    gap: 55px;
+    margin: auto;
+  }
+
+  .turntable {
+    padding: 38px;
+  }
+
+  .vinyl {
+    max-width: 360px;
+  }
+
+  .song-copy h2 {
+    font-size: clamp(60px, 6vw, 85px);
+    line-height: .83;
+  }
+
+  .song-copy p {
+    font-size: 15px;
+  }
+
+  .player {
+    margin-top: 28px;
+  }
+
+
+  /* =========================================================
+     FUTURE
+     ========================================================= */
+
+  .future.active {
+    justify-content: center;
+  }
+
+  .future-paper {
+    width: min(560px, 70vw);
+    margin: 0;
+    padding: 55px;
+  }
+
+  .future-paper h2 {
+    font-size: clamp(55px, 6vw, 75px);
+  }
+
+  .future-paper label {
+    font-size: 20px;
+    margin: 20px 0;
+  }
+
+  .moon {
+    width: 145px;
+  }
+
+
+  /* =========================================================
+     LETTER
+     ========================================================= */
+
+  .letter-screen.active {
+    place-items: center;
+  }
+
+  .letter-sheet {
+    width: min(760px, 82vw);
+    padding: clamp(55px, 6vw, 80px);
+  }
+
+  .letter-sheet h2 {
+    font-size: 58px;
+  }
+
+  .letter-sheet p {
+    font-size: 22px;
+    line-height: 1.7;
+  }
+
+
+  /* =========================================================
+     FINAL
+     ========================================================= */
+
+  .final.active {
+    min-height: 100svh;
+    grid-template-columns: minmax(300px, 400px) minmax(400px, 580px);
+    gap: clamp(45px, 6vw, 90px);
+    padding:
+      7vh
+      clamp(50px, 7vw, 100px)
+      calc(100px + var(--safe-bottom));
+  }
+
+  .final-photo {
+    width: min(390px, 36vw);
+    aspect-ratio: 4 / 5;
+  }
+
+  .final-copy h2 {
+    font-size: clamp(65px, 7vw, 100px);
+    line-height: .82;
+  }
+
+  .final-copy p {
+    font-size: 26px;
+  }
+
+  .final-copy p.small {
+    font-size: 15px;
+    max-width: 540px;
+  }
+}
+
+
+/* =========================================================
+   TABLET LANDSCAPE
+   ========================================================= */
+
+@media (min-width: 900px) and (max-width: 1200px)
+       and (orientation: landscape) {
+
+  .hero.active {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .hero-collage {
+    height: 75vh;
+  }
+
+  .memory-wall {
+    grid-template-columns: repeat(4, 1fr);
+  }
+
+  .record-player {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .future-paper {
+    width: 500px;
+  }
+}
+
+
+/* =========================================================
+   FIX THE TWO OLD TYPO SELECTORS
+   ========================================================= */
+
+@media(max-width:360px) {
+  .torn-paper h2 {
+    font-size: 48px;
+  }
+}
+/* =========================================
+   TURNTABLE ARM — CORRECT PIVOT
+   ========================================= */
+
+.turntable {
+  position: relative;
+  isolation: isolate;
+}
+
+.needle {
+  position: absolute;
+
+  /* FIXED ROUND PIVOT */
+  right: 5.5%;
+  top: 7%;
+
+  width: 155px;
+  height: 8px;
+
+  background: #d5b681;
+  border-radius: 999px;
+
+  /*
+    IMPORTANT:
+    The RIGHT end is the pivot.
+    The arm extends LEFT from it.
+  */
+  transform-origin: 100% 50%;
+
+  /*
+    Resting position:
+    arm is lifted away from the record.
+  */
+  transform: rotate(-8deg);
+
+  z-index: 20;
+  pointer-events: none;
+
+  box-shadow:
+    0 2px 5px rgba(0,0,0,.35);
+
+  transition:
+    transform .9s cubic-bezier(.22,.61,.36,1);
+}
+
+
+/* Needle/cartridge at the LEFT end */
+.needle::after {
+  content: "";
+
+  position: absolute;
+
+  left: -5px;
+  top: 50%;
+
+  width: 15px;
+  height: 20px;
+
+  background: #d8bd8d;
+  border-radius: 2px;
+
+  transform:
+    translateY(-50%)
+    rotate(-8deg);
+
+  box-shadow:
+    0 3px 6px rgba(0,0,0,.4);
+}
+
+
+/* =========================================
+   PLAYING — DROP NEEDLE ONTO VINYL
+   ========================================= */
+
+.turntable.playing .needle {
+  transform: rotate(-42deg);
+}
+
+
+/* =========================================
+   FULL VINYL RECORD ROTATION
+   ========================================= */
+
+#vinyl {
+  transform-origin: center center;
+  will-change: transform;
+}
+
+#vinyl.playing {
+  animation: vinylSpin 4s linear infinite;
+}
+
+@keyframes vinylSpin {
+  from {
+    transform: rotate(0deg);
+  }
+
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+
+/* Tiny realistic turntable vibration */
+
+.turntable.playing {
+  animation:
+    turntableHum
+    .18s
+    ease-in-out
+    infinite
+    alternate;
+}
+
+@keyframes turntableHum {
+
+  from {
+    transform: translateY(0);
+  }
+
+  to {
+    transform: translateY(.4px);
+  }
+
+}
+
+
+/* Reduced motion */
+
+@media (prefers-reduced-motion: reduce) {
+
+  .vinyl.playing,
+  .turntable.playing {
+    animation: none;
+  }
+
+  .needle {
+    transition: none;
+  }
+
+}
+/* =========================================================
+   VINYL — VISIBLE ROTATION
+   The black record is circular, so we add a subtle
+   directional reflection that makes its rotation visible.
+   ========================================================= */
+
+#vinyl {
+  position: relative;
+  overflow: hidden;
+
+  width: min(390px, 100%);
+  aspect-ratio: 1;
+  margin: auto;
+
+  border-radius: 50%;
+
+  background:
+    repeating-radial-gradient(
+      circle at center,
+      #0b0b0b 0 3px,
+      #151515 4px 6px,
+      #0b0b0b 7px 8px
+    );
+
+  display: grid;
+  place-items: center;
+
+  transform-origin: center center;
+  will-change: transform;
+
+  animation:
+    spin 6s linear infinite;
+
+  animation-play-state: paused;
+}
+
+
+/* ---------------------------------------------------------
+   MOVING VINYL REFLECTION
+   This is what makes the black disc visibly rotate.
+   --------------------------------------------------------- */
+
+#vinyl::before {
+  content: "";
+
+  position: absolute;
+  inset: 0;
+
+  border-radius: 50%;
+
+  background:
+    conic-gradient(
+      from 15deg,
+      transparent 0deg,
+      transparent 28deg,
+      rgba(255,255,255,.13) 38deg,
+      rgba(255,255,255,.035) 48deg,
+      transparent 65deg,
+      transparent 360deg
+    );
+
+  opacity: .65;
+
+  pointer-events: none;
+
+  z-index: 1;
+}
+
+
+/* ---------------------------------------------------------
+   SECOND SUBTLE GROOVE REFLECTION
+   --------------------------------------------------------- */
+
+#vinyl::after {
+  content: "";
+
+  position: absolute;
+  inset: 8%;
+
+  border-radius: 50%;
+
+  background:
+    conic-gradient(
+      from 195deg,
+      transparent 0deg,
+      transparent 35deg,
+      rgba(255,255,255,.055) 47deg,
+      transparent 60deg,
+      transparent 360deg
+    );
+
+  opacity: .45;
+
+  pointer-events: none;
+
+  z-index: 1;
+}
+
+
+/* ---------------------------------------------------------
+   RECORD ROTATES ONLY WHEN PLAYING
+   --------------------------------------------------------- */
+
+#vinyl.playing {
+  animation-play-state: running;
+}
+
+
+/* ---------------------------------------------------------
+   KEEP THE PINK LABEL ABOVE THE REFLECTION
+   --------------------------------------------------------- */
+
+#vinyl .label {
+  position: relative;
+  z-index: 5;
+}
+
+
+/* ---------------------------------------------------------
+   ROTATION
+   --------------------------------------------------------- */
+
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
+  }
+
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+
+/* ---------------------------------------------------------
+   REDUCED MOTION
+   --------------------------------------------------------- */
+
+@media (prefers-reduced-motion: reduce) {
+
+  #vinyl {
+    animation: none;
+  }
+
+}

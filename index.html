@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <meta name="theme-color" content="#211815" />
+  <meta name="color-scheme" content="dark" />
+  <title>Cherivelle — Our Story</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600;700&family=DM+Mono:wght@400;500&family=Kalam:wght@400;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div class="grain" aria-hidden="true"></div>
+  <div class="progress" aria-hidden="true"><span id="progressBar"></span></div>
+  <div class="story-controls" id="storyControls" aria-label="Story navigation">
+  <button class="story-arrow" id="storyBack" type="button" aria-label="Previous chapter">←</button>
+  <span class="story-count" id="storyCount">01 / 09</span>
+  <button class="story-arrow" id="storyNext" type="button" aria-label="Next chapter">→</button>
+</div>
+
+  <main id="app">
+    <!-- 00 · INTRO -->
+    <section class="screen hero active" id="home" aria-labelledby="heroTitle">
+      <div class="hero-orbit orbit-a" aria-hidden="true"></div>
+      <div class="hero-orbit orbit-b" aria-hidden="true"></div>
+      <div class="hero-copy">
+        <p class="eyebrow">CHERIVELLE · ANNIVERSARY EDITION</p>
+        <h1 id="heroTitle">Our <em>Story</em><span>♡</span></h1>
+        <p class="hero-sub">Another year. Another chapter.<br>Still you.</p>
+        <button class="paper-btn hero-start" data-go="hub" type="button">START OUR JOURNEY <b>→</b></button>
+      </div>
+      <div class="hero-collage" aria-hidden="true">
+        <div class="film-strip"></div>
+        <div class="photo p1"><span>THE BEGINNING</span></div>
+        <div class="photo p2"><span>US</span></div>
+        <div class="photo p3"><span>MORE MEMORIES</span></div>
+        <div class="note">Different dates.<br>Different moments.<br><strong>Same us.</strong> ♡</div>
+      </div>
+    </section>
+
+    <!-- 01 · HUB -->
+    <section class="screen hub" id="hub" aria-labelledby="hubTitle">
+      <header class="screen-head">
+        <div><small>CHAPTER 01</small><h2 id="hubTitle">The little things<br><em>that became us.</em></h2></div>
+        <div class="stamp">OUR<br>STORY</div>
+      </header>
+      <div class="hub-table">
+        <button class="object-card book" data-go="timeline" type="button"><span class="object-icon">01</span><strong>Our Beginning</strong><small>the day it all started</small><i>OPEN →</i></button>
+        <button class="object-card polaroid" data-go="memories" type="button"><span class="object-icon">02</span><strong>Our Memories</strong><small>little moments, big feelings</small><i>OPEN →</i></button>
+        <button class="object-card cassette" data-go="song" type="button"><span class="object-icon">03</span><strong>Our Song</strong><small>press play on us</small><i>OPEN →</i></button>
+        <button class="object-card letter" data-go="letter" type="button"><span class="object-icon">04</span><strong>My Letter</strong><small>something I never want to forget</small><i>OPEN →</i></button>
+        <button class="object-card heart" data-go="why" type="button"><span class="object-icon">♡</span><strong>Why Us?</strong><small>the reasons I choose you</small><i>OPEN →</i></button>
+        <button class="object-card future" data-go="future" type="button"><span class="object-icon">05</span><strong>Our Future</strong><small>what comes next</small><i>OPEN →</i></button>
+      </div>
+      <div class="hub-bottom"><span>CHOOSE A CHAPTER</span><button class="text-link" data-go="timeline" type="button">begin with the beginning →</button></div>
+    </section>
+
+    <!-- 02 · TIMELINE -->
+    <section class="screen timeline" id="timeline" aria-labelledby="timelineTitle">
+      <div class="torn-paper">
+        <small>CHAPTER 02 · THE BEGINNING</small>
+        <h2 id="timelineTitle">How it all <em>began...</em></h2>
+        <div class="years">
+          <article><b>2019</b><i>♡</i><strong>We met</strong><p>The first little moment.</p></article>
+          <article><b>2020</b><i>♡</i><strong>First talks</strong><p>Somehow, we kept talking.</p></article>
+          <article><b>2021</b><i>♡</i><strong>Us</strong><p>It started feeling different.</p></article>
+          <article><b>2022</b><i>♡</i><strong>Adventures</strong><p>More memories than plans.</p></article>
+          <article><b>2023</b><i>♡</i><strong>More love</strong><p>Another chapter together.</p></article>
+          <article><b>2024</b><i>♡</i><strong>Still us</strong><p>And somehow, even better.</p></article>
+        </div>
+        <p class="editable-hint">Replace the years, dates and little notes with your real story.</p>
+      </div>
+    </section>
+
+    <!-- 03 · MEMORIES -->
+    <section class="screen memories" id="memories" aria-labelledby="memoriesTitle">
+      <div class="section-title"><small>CHAPTER 03 · OUR MEMORIES</small><h2 id="memoriesTitle">Little moments.<br><em>Big feelings.</em></h2><p>Four photographs. Four tiny pieces of a much bigger story.</p></div>
+      <div class="memory-wall">
+        <article class="polaroid-card m1"><div class="memory-photo">PHOTO 01</div><p>“That day I knew.”</p><small>ADD DATE · LOCATION</small></article>
+        <article class="polaroid-card m2"><div class="memory-photo">PHOTO 02</div><p>“Just us being us.”</p><small>ADD DATE · LOCATION</small></article>
+        <article class="polaroid-card m3"><div class="memory-photo">PHOTO 03</div><p>“One of my favorites.”</p><small>ADD DATE · LOCATION</small></article>
+        <article class="polaroid-card m4"><div class="memory-photo">PHOTO 04</div><p>“Would do it again.”</p><small>ADD DATE · LOCATION</small></article>
+      </div>
+    </section>
+
+    <!-- 04 · WHY US -->
+    <section class="screen why" id="why" aria-labelledby="reasonTitle">
+      <div class="why-bg" aria-hidden="true"></div>
+      <div class="why-card">
+        <small>CHAPTER 04 · WHY US?</small>
+        <div class="reason-count"><span id="reasonNum">01</span> / 06</div>
+        <h2 id="reasonTitle">I love how<br><em>we always find</em><br>our way back.</h2>
+        <p id="reasonText">Even after ordinary days, busy weeks, or tiny arguments — somehow it is still you.</p>
+        <div class="reason-actions"><button id="prevReason" type="button" aria-label="Previous reason">←</button><button id="nextReason" type="button" aria-label="Next reason">→</button></div>
+      </div>
+    </section>
+
+    <!-- 05 · SONG -->
+    <section class="screen song" id="song" aria-labelledby="songTitleHeading">
+      <div class="record-player">
+        <div class="turntable">
+          <div class="vinyl" id="vinyl"><div class="label">♡<small>OUR<br>SONG</small></div></div>
+          <div class="needle"></div>
+        </div>
+        <div class="song-copy">
+          <small>CHAPTER 05 · OUR SONG</small>
+          <h2 id="songTitleHeading">Because this one<br><em>feels like us.</em></h2>
+          <p>Replace this with your song, your artist, and the memory attached to it.</p>
+          <div class="player"><button id="playBtn" type="button" aria-label="Play our song">▶</button><div><strong id="songTitle">Our Song</strong><span id="songTime">00:00 · 03:24</span></div></div>
+        </div>
+      </div>
+      <audio id="audio" preload="metadata"><source src="Stay-With-Me.mp3" type="audio/mpeg"></audio>
+    </section>
+
+    <!-- 06 · FUTURE -->
+    <section class="screen future" id="future" aria-labelledby="futureTitle">
+      <div class="future-scene" aria-hidden="true"><div class="moon"></div><div class="city"></div></div>
+      <div class="future-paper">
+        <small>CHAPTER 06 · WHAT COMES NEXT</small>
+        <h2 id="futureTitle">I can't wait for...</h2>
+        <label><input type="checkbox"> More tiny adventures</label>
+        <label><input type="checkbox"> A home of our own</label>
+        <label><input type="checkbox"> All our silly moments</label>
+        <label><input type="checkbox"> Growing old with you</label>
+        <label><input type="checkbox"> A lifetime of us ♡</label>
+        <button class="paper-btn" data-go="letter" type="button">READ MY LETTER →</button>
+      </div>
+    </section>
+
+    <!-- 07 · LETTER -->
+    <section class="screen letter-screen" id="letter" aria-labelledby="letterTitle">
+      <div class="letter-sheet">
+        <small>CHAPTER 07 · A LETTER TO YOU</small>
+        <h2 id="letterTitle">To you,</h2>
+        <p>Happy Anniversary.</p>
+        <p>Thank you for being my person, my peace, and my biggest blessing.</p>
+        <p>Here's to every chapter we've written together — and all the beautiful ones still to come.</p>
+        <p class="signature">Always,<br><em>me ♡</em></p>
+        <button class="paper-btn" data-go="final" type="button">ONE LAST THING →</button>
+      </div>
+    </section>
+
+    <!-- 08 · FINAL -->
+    <section class="screen final" id="final" aria-labelledby="finalTitle">
+      <div class="final-photo" aria-hidden="true"><span>YOUR PHOTO</span></div>
+      <div class="final-copy">
+        <small>ONE LAST THING...</small>
+        <h2 id="finalTitle">Another year down.<br><em>Forever to go.</em> ♡</h2>
+        <p>Happy Anniversary, my love.</p>
+        <p class="small">Here's to everything we've been, everything we are, and everything we're still going to become.</p>
+        <button class="paper-btn" id="replay" type="button">↻ REPLAY OUR STORY</button>
+      </div>
+      <div class="brand">CHERIVELLE <span>♡</span><small>DIGITAL GIFTS FOR REAL EMOTIONS</small></div>
+    </section>
+  </main>
+  <script src="script.js"></script>
+</body>
+</html>
